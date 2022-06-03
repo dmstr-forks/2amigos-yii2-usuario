@@ -10,89 +10,92 @@
  */
 
 use Da\User\Widget\ConnectWidget;
+use hrzg\widget\widgets\Cell;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /**
- * @var yii\web\View            $this
+ * @var yii\web\View $this
  * @var \Da\User\Form\LoginForm $model
- * @var \Da\User\Module         $module
+ * @var \Da\User\Module $module
  */
 
 $this->title = Yii::t('usuario', 'Sign in');
+
+echo Cell::widget(['id' => 'login-top']);
 ?>
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3">
+            <h3 class="text-center"><?= Html::encode($this->title) ?></h3>
+            <?php $form = ActiveForm::begin(
+                [
+                    'id' => $model->formName(),
+                    'enableClientValidation' => false,
+                    'validateOnBlur' => false,
+                    'validateOnType' => false,
+                    'validateOnChange' => false
+                ]
+            ) ?>
 
-<?= $this->render('/shared/_alert', ['module' => Yii::$app->getModule('user')]) ?>
+            <?= $form->field(
+                $model,
+                'login',
+                ['inputOptions' => ['autofocus' => 'autofocus', 'class' => 'form-control', 'tabindex' => '1']]
+            ) ?>
 
-<div class="row">
-    <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title"><?= Html::encode($this->title) ?></h3>
-            </div>
-            <div class="panel-body">
-                <?php $form = ActiveForm::begin(
-                    [
-                        'id' => $model->formName(),
-                        'enableAjaxValidation' => true,
-                        'enableClientValidation' => false,
-                        'validateOnBlur' => false,
-                        'validateOnType' => false,
-                        'validateOnChange' => false,
-                    ]
-                ) ?>
-
-                <?= $form->field(
+            <?= $form
+                ->field(
                     $model,
-                    'login',
-                    ['inputOptions' => ['autofocus' => 'autofocus', 'class' => 'form-control', 'tabindex' => '1']]
-                ) ?>
+                    'password',
+                    ['inputOptions' => ['class' => 'form-control', 'tabindex' => '2']]
+                )
+                ->passwordInput() ?>
 
-                <?= $form
-                    ->field(
-                        $model,
-                        'password',
-                        ['inputOptions' => ['class' => 'form-control', 'tabindex' => '2']]
-                    )
-                    ->passwordInput()
-                    ->label(
-                        Yii::t('usuario', 'Password')
-                        . ($module->allowPasswordRecovery ?
-                            ' (' . Html::a(
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-xs-12 col-md-6">
+                        <?= $form->field($model, 'rememberMe')->checkbox(['tabindex' => '4']) ?>
+                    </div>
+                    <?php if ($module->allowPasswordRecovery): ?>
+                        <div class="col-xs-12 col-md-6">
+                            <?= Html::a(
                                 Yii::t('usuario', 'Forgot password?'),
                                 ['/user/recovery/request'],
-                                ['tabindex' => '5']
-                            )
-                            . ')' : '')
-                    ) ?>
+                                ['tabindex' => '5','class' => 'pull-right']
+                            ) ?>
+                        </div>
+                    <?php endif; ?>
+                </div>
+            </div>
 
-                <?= $form->field($model, 'rememberMe')->checkbox(['tabindex' => '4']) ?>
-
+            <div class="form-group">
                 <?= Html::submitButton(
-                    Yii::t('usuario', 'Sign in'),
+                    Yii::t('usuario', 'Login'),
                     ['class' => 'btn btn-primary btn-block', 'tabindex' => '3']
                 ) ?>
-
-                <?php ActiveForm::end(); ?>
             </div>
+            <?php ActiveForm::end(); ?>
+            <br>
+            <?php if ($module->enableEmailConfirmation): ?>
+                <p class="text-center">
+                    <?= Html::a(
+                        Yii::t('usuario', 'Didn\'t receive confirmation message?'),
+                        ['/user/registration/resend']
+                    ) ?>
+                </p>
+            <?php endif ?>
+            <?php if ($module->enableRegistration): ?>
+                <p class="text-center">
+                    <?= Html::a(Yii::t('usuario', 'Don\'t have an account? Sign up!'),
+                        ['/user/registration/register']) ?>
+                </p>
+            <?php endif ?>
+            <?= ConnectWidget::widget(
+                [
+                    'baseAuthUrl' => ['/user/security/auth'],
+                ]
+            ) ?>
         </div>
-        <?php if ($module->enableEmailConfirmation): ?>
-            <p class="text-center">
-                <?= Html::a(
-                    Yii::t('usuario', 'Didn\'t receive confirmation message?'),
-                    ['/user/registration/resend']
-                ) ?>
-            </p>
-        <?php endif ?>
-        <?php if ($module->enableRegistration): ?>
-            <p class="text-center">
-                <?= Html::a(Yii::t('usuario', 'Don\'t have an account? Sign up!'), ['/user/registration/register']) ?>
-            </p>
-        <?php endif ?>
-        <?= ConnectWidget::widget(
-            [
-                'baseAuthUrl' => ['/user/security/auth'],
-            ]
-        ) ?>
     </div>
-</div>
+<?php
+echo Cell::widget(['id' => 'login-bottom']);

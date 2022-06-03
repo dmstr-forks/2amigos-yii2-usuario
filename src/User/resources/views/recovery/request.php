@@ -9,6 +9,7 @@
  * the LICENSE file that was distributed with this source code.
  */
 
+use hrzg\widget\widgets\Cell;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -19,28 +20,31 @@ use yii\widgets\ActiveForm;
  */
 
 $this->title = Yii::t('usuario', 'Recover your password');
+echo Cell::widget(['id' => 'request-top']);
 ?>
 <div class="row">
-    <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title"><?= Html::encode($this->title) ?></h3>
-            </div>
-            <div class="panel-body">
+    <div class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3">
+                <h3 class="text-center"><?= Html::encode($this->title) ?></h3>
+
                 <?php $form = ActiveForm::begin(
                     [
                         'id' => $model->formName(),
-                        'enableAjaxValidation' => true,
                         'enableClientValidation' => false,
                     ]
                 ); ?>
 
                 <?= $form->field($model, 'email')->textInput(['autofocus' => true]) ?>
-
-                <?= Html::submitButton(Yii::t('usuario', 'Continue'), ['class' => 'btn btn-primary btn-block']) ?><br>
-
+        <br>
+                <?= Html::submitButton(Yii::t('usuario', 'Reset password'), ['class' => 'btn btn-primary btn-block']) ?><br>
                 <?php ActiveForm::end(); ?>
-            </div>
-        </div>
+                <br>
+                <p class="text-center">
+                    <?= Html::a(
+                        Yii::t('usuario', 'Back to login!'),
+                        ['/user/security/login']
+                    ) ?>
+                </p>
     </div>
 </div>
+<?php
+echo Cell::widget(['id' => 'request-bottom']);

@@ -10,6 +10,7 @@
  */
 
 use Da\User\Widget\ConnectWidget;
+use hrzg\widget\widgets\Cell;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -20,9 +21,9 @@ use yii\widgets\ActiveForm;
  */
 
 $this->title = Yii::t('usuario', 'Sign in');
-?>
 
-<?= $this->render('/shared/_alert', ['module' => Yii::$app->getModule('user')]) ?>
+echo Cell::widget(['id' => 'confirm-top']);
+?>
 
 <div class="row">
     <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">
@@ -67,3 +68,5 @@ $this->title = Yii::t('usuario', 'Sign in');
         </div>
     </div>
 </div>
+<?php
+echo Cell::widget(['id' => 'confirm-bottom']);

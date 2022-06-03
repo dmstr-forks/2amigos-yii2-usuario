@@ -9,6 +9,7 @@
  * the LICENSE file that was distributed with this source code.
  */
 
+use hrzg\widget\widgets\Cell;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -19,6 +20,7 @@ use yii\widgets\ActiveForm;
  */
 
 $this->title = Yii::t('usuario', 'Reset your password');
+echo Cell::widget(['id' => 'reset-top']);
 ?>
 <div class="row">
     <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">
@@ -44,3 +46,5 @@ $this->title = Yii::t('usuario', 'Reset your password');
         </div>
     </div>
 </div>
+<?php
+echo Cell::widget(['id' => 'reset-bottom']);
