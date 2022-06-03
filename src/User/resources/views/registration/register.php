@@ -42,6 +42,7 @@ $this->title = Yii::t('usuario', 'Sign up');
 
                 <?php if ($module->generatePasswords === false): ?>
                     <?= $form->field($model, 'password')->passwordInput() ?>
+                    <?= $form->field($model, 'password_repeat')->passwordInput() ?>
                 <?php endif ?>
 
                 <?php if ($module->enableGdprCompliance): ?>

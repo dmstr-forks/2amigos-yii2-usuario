@@ -36,6 +36,10 @@ class RegistrationForm extends Model
      */
     public $password;
     /**
+     * @var string Password repeat
+     */
+    public $password_repeat;
+    /**
      * @var bool Data processing consent
      */
     public $gdpr_consent;
@@ -73,8 +77,9 @@ class RegistrationForm extends Model
                 'message' => Yii::t('usuario', 'This email address has already been taken'),
             ],
             // password rules
-            'passwordRequired' => ['password', 'required', 'skipOnEmpty' => $this->module->generatePasswords],
+            'passwordRequired' => [['password', 'password_repeat'], 'required', 'skipOnEmpty' => $this->module->generatePasswords],
             'passwordLength' => ['password', 'string', 'min' => 6, 'max' => 72],
+            'passwordRepeat' => ['password_repeat', 'compare', 'compareAttribute' => 'password', 'message' => Yii::t('usuario', 'Passwords don\'t match')],
             'gdprType' => ['gdpr_consent', 'boolean'],
             'gdprDefault' => ['gdpr_consent', 'default', 'value' => 0, 'skipOnEmpty' => false],
             'gdprRequired' => ['gdpr_consent',
@@ -96,6 +101,7 @@ class RegistrationForm extends Model
             'email' => Yii::t('usuario', 'Email'),
             'username' => Yii::t('usuario', 'Username'),
             'password' => Yii::t('usuario', 'Password'),
+            'password_repeat' => Yii::t('usuario', 'Password repeat'),
             'gdpr_consent' => Yii::t('usuario', 'Data processing consent')
         ];
     }
