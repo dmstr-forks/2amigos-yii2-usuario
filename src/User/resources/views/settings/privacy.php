@@ -2,18 +2,19 @@
 
 use yii\helpers\Html;
 
-/* @var $module \Da\User\Module */
+/**
+ * @var $module \Da\User\Module
+ */
 
 $this->title = Yii::t('usuario', 'Privacy settings');
-
 ?>
 
 <div class="row">
-    <div class="col-md-3">
+    <div class="col-md-4">
         <?= $this->render('_menu') ?>
     </div>
-    <div class="col-md-9">
-        <div class="panel panel-default">
+    <div class="col-md-8">
+        <div class="panel panel-primary">
             <div class="panel-heading">
                 <h3 class="panel-title"><?= Html::encode($this->title) ?></h3>
             </div>
@@ -29,7 +30,7 @@ $this->title = Yii::t('usuario', 'Privacy settings');
                         <?= Html::a(Yii::t('usuario', 'Download my data'),
                             ['/user/settings/export'],
                             [
-                                'class' => 'btn btn-info',
+                                'class' => 'btn btn-primary',
                                 'target' => '_blank'
                             ])
                         ?>

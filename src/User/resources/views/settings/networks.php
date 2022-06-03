@@ -20,24 +20,18 @@ use yii\helpers\Html;
 
 $this->title = Yii::t('usuario', 'Networks');
 ?>
-
-<div class="clearfix"></div>
-
-<?= $this->render('/shared/_alert', ['module' => Yii::$app->getModule('user')]) ?>
-
 <div class="row">
-    <div class="col-md-3">
+    <div class="col-md-4">
         <?= $this->render('/settings/_menu') ?>
     </div>
-    <div class="col-md-9">
-        <div class="panel panel-default">
+    <div class="col-md-8">
+        <div class="panel panel-primary">
             <div class="panel-heading">
                 <?= Html::encode($this->title) ?>
             </div>
             <div class="panel-body">
                 <div class="alert alert-info">
-                    <p><?= Yii::t('usuario', 'You can connect multiple accounts to be able to log in using them') ?>
-                        .</p>
+                    <p><?= Yii::t('usuario', 'You can connect multiple accounts to be able to log in using them') ?></p>
                 </div>
                 <?php $auth = ConnectWidget::begin(
                     [
@@ -70,7 +64,7 @@ $this->title = Yii::t('usuario', 'Networks');
                                         Yii::t('usuario', 'Connect'),
                                         $auth->createClientUrl($client),
                                         [
-                                            'class' => 'btn btn-success btn-block',
+                                            'class' => 'btn btn-primary btn-block',
                                         ]
                                     )
                                 ?>

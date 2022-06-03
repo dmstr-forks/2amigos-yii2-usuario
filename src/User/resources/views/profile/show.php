@@ -42,7 +42,7 @@ $this->title = empty($profile->name) ? Html::encode($profile->user->username) : 
                     <?php if (!empty($profile->website)): ?>
                         <li>
                             <i class="glyphicon glyphicon-globe text-muted"></i>
-                            <?= Html::a(Html::encode($profile->website), Html::encode($profile->website)) ?>
+                            <?= Html::a(Html::encode($profile->website), Html::encode($profile->website), ['target' => '_blank']) ?>
                         </li>
                     <?php endif; ?>
                     <?php if (!empty($profile->public_email)): ?>

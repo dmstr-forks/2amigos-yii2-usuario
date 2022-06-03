@@ -10,6 +10,7 @@
  */
 
 use Da\User\Helper\TimezoneHelper;
+use hrzg\widget\widgets\Cell;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
@@ -24,17 +25,12 @@ use yii\widgets\ActiveForm;
 $this->title = Yii::t('usuario', 'Profile settings');
 $timezoneHelper = $model->make(TimezoneHelper::class);
 ?>
-
-<div class="clearfix"></div>
-
-<?= $this->render('/shared/_alert', ['module' => Yii::$app->getModule('user')]) ?>
-
 <div class="row">
-    <div class="col-md-3">
+    <div class="col-md-4">
         <?= $this->render('_menu') ?>
     </div>
-    <div class="col-md-9">
-        <div class="panel panel-default">
+    <div class="col-md-8">
+        <div class="panel panel-primary">
             <div class="panel-heading">
                 <h3 class="panel-title"><?= Html::encode($this->title) ?></h3>
             </div>

@@ -23,16 +23,12 @@ $this->title = Yii::t('usuario', 'Account settings');
 /** @var \Da\User\Module $module */
 $module = Yii::$app->getModule('user');
 ?>
-<div class="clearfix"></div>
-
-<?= $this->render('/shared/_alert', ['module' => Yii::$app->getModule('user')]) ?>
-
 <div class="row">
-    <div class="col-md-3">
+    <div class="col-md-4">
         <?= $this->render('/settings/_menu') ?>
     </div>
-    <div class="col-md-9">
-        <div class="panel panel-default">
+    <div class="col-md-8">
+        <div class="panel panel-primary">
             <div class="panel-heading">
                 <h3 class="panel-title"><?= Html::encode($this->title) ?></h3>
             </div>
@@ -92,7 +88,7 @@ $module = Yii::$app->getModule('user');
                     </div>
                 </div>
             </div>
-            <div class="panel panel-info">
+            <div class="panel panel-primary">
                 <div class="panel-heading">
                     <h3 class="panel-title"><?= Yii::t('usuario', 'Two Factor Authentication (2FA)') ?></h3>
                 </div>
@@ -106,7 +102,7 @@ $module = Yii::$app->getModule('user');
                             ['two-factor-disable', 'id' => $model->getUser()->id],
                             [
                                 'id' => 'disable_tf_btn',
-                                'class' => 'btn btn-warning ' . ($model->getUser()->auth_tf_enabled ? '' : 'hide'),
+                                'class' => 'btn btn-danger ' . ($model->getUser()->auth_tf_enabled ? '' : 'hide'),
                                 'data-method' => 'post',
                                 'data-confirm' => Yii::t('usuario', 'This will disable two factor authentication. Are you sure?'),
                             ]
@@ -116,7 +112,7 @@ $module = Yii::$app->getModule('user');
                             '#tfmodal',
                             [
                                 'id' => 'enable_tf_btn',
-                                'class' => 'btn btn-info ' . ($model->getUser()->auth_tf_enabled ? 'hide' : ''),
+                                'class' => 'btn btn-primary ' . ($model->getUser()->auth_tf_enabled ? 'hide' : ''),
                                 'data-toggle' => 'modal',
                                 'data-target' => '#tfmodal'
                             ]
