@@ -53,10 +53,21 @@ class ProfileController extends Controller
                     [
                         'allow' => true,
                         'actions' => ['show'],
-                        'roles' => ['?', '@'],
-                    ],
-                ],
-            ],
+                        'matchCallback' => function($action) {
+                            if (\Yii::$app->user->isGuest) {
+                                return false;
+                            }
+                            if (\Yii::$app->user->can('user')) {
+                                return true;
+                            }
+                            if (\Yii::$app->user->id === (int)Yii::$app->request->getQueryParam('id')) {
+                                return true;
+                            }
+                            return false;
+                        }
+                    ]
+                ]
+            ]
         ];
     }
 
