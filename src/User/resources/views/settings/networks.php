@@ -19,7 +19,6 @@ use yii\helpers\Html;
  */
 
 $this->title = Yii::t('usuario', 'Networks');
-$this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <div class="clearfix"></div>

@@ -20,8 +20,6 @@ use yii\widgets\ActiveForm;
  */
 
 $this->title = Yii::t('usuario', 'Account settings');
-$this->params['breadcrumbs'][] = $this->title;
-
 /** @var \Da\User\Module $module */
 $module = Yii::$app->getModule('user');
 ?>
@@ -176,7 +174,7 @@ $(document)
        e.preventDefault();
        var btn = $(this);
        btn.prop('disabled', true);
-       
+
        $.getJSON('{$verify}', {code: $('#tfcode').val()}, function(data){
           btn.prop('disabled', false);
           if(data.success) {

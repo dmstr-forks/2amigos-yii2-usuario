@@ -20,7 +20,6 @@ use yii\widgets\ActiveForm;
  */
 
 $this->title = Yii::t('usuario', 'Sign in');
-$this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <?= $this->render('/shared/_alert', ['module' => Yii::$app->getModule('user')]) ?>

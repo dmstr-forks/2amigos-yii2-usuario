@@ -22,7 +22,6 @@ use yii\widgets\ActiveForm;
  */
 
 $this->title = Yii::t('usuario', 'Profile settings');
-$this->params['breadcrumbs'][] = $this->title;
 $timezoneHelper = $model->make(TimezoneHelper::class);
 ?>
 
