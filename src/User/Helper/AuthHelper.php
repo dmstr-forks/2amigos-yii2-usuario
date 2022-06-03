@@ -14,6 +14,7 @@ namespace Da\User\Helper;
 use Da\User\Model\AbstractAuthItem;
 use Da\User\Module;
 use Da\User\Traits\AuthManagerAwareTrait;
+use Da\User\Traits\ModuleAwareTrait;
 use Yii;
 use yii\helpers\ArrayHelper;
 use yii\rbac\Permission;
@@ -23,6 +24,7 @@ use yii\rbac\Rule;
 class AuthHelper
 {
     use AuthManagerAwareTrait;
+    use ModuleAwareTrait;
 
     /**
      * Checks whether a user has certain role.
@@ -51,10 +53,8 @@ class AuthHelper
     public function isAdmin($username)
     {
         /** @var Module $module */
-        $module = Yii::$app->getModule('user');
-        $hasAdministratorPermissionName = $this->getAuthManager() && $module->administratorPermissionName
-            ? Yii::$app->getUser()->can($module->administratorPermissionName)
-            : false;
+        $module = $this->getModule();
+        $hasAdministratorPermissionName = $this->getAuthManager() && $module->administratorPermissionName && Yii::$app->getUser()->can($module->administratorPermissionName);
 
         return $hasAdministratorPermissionName || in_array($username, $module->administrators, false);
     }
