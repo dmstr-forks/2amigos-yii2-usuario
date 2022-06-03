@@ -165,7 +165,7 @@ return [
     'Registration IP' => 'Registrierungs-IP',
     'Registration on this website is disabled' => 'Die Registrierung auf dieser Webseite ist deaktiviert',
     'Registration time' => 'Registrierungszeit',
-    'Remember me next time' => 'Anmeldung für das nächste Mal merken',
+    'Remember me next time' => 'Angemeldet bleiben',
     'Request new confirmation message' => 'Neuen Wiederherstellungs-Link anfordern',
     'Required "key" cannot be empty.' => 'Erforderlicher "key" darf nicht leer sein.',
     'Required "secret" cannot be empty.' => 'Erforderliches "secret" darf nicht leer sein.',
@@ -277,4 +277,9 @@ return [
     'Submit' => 'Absenden',
     'Unfortunately, you can not work with this site without giving us consent to process your data.' => 'Leider können Sie nicht mit dieser Seite arbeiten, ohne uns die Zustimmung zur Verarbeitung Ihrer Daten zu geben.',
     'Your consent is required to work with this site' => 'Ihre Zustimmung ist erforderlich, um mit dieser Website zu arbeiten',
+    'Back to login!' => 'Zurück zur Anmeldung!',
+    'Reset password' => 'Passwort zurücksetzen',
+    'Go to homepage' => 'Zur Startseite',
+    'Password repeat' => 'Passwort wiederholen',
+    'Passwords don\'t match' => 'Passwörter stimmen nicht überein'
 ];
