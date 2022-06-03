@@ -25,14 +25,6 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t('usuario', 'Users'), 'url' =
 $this->params['breadcrumbs'][] = $this->title;
 
 ?>
-<div class="clearfix"></div>
-<?= $this->render(
-    '/shared/_alert',
-    [
-        'module' => Yii::$app->getModule('user'),
-    ]
-) ?>
-
 <div class="row">
     <div class="col-md-12">
         <div class="panel panel-default">
@@ -40,10 +32,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 <h3 class="panel-title"><?= Html::encode($this->title) ?></h3>
             </div>
             <div class="panel-body">
-                <?= $this->render('/shared/_menu') ?>
                 <div class="row">
                     <div class="col-md-3">
                         <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title"><?= Html::encode($user->username) ?></h3>
+                            </div>
                             <div class="panel-body">
                                 <?= Nav::widget(
                                     [
@@ -68,6 +62,19 @@ $this->params['breadcrumbs'][] = $this->title;
                                                 'url' => ['/user/admin/assignments', 'id' => $user->id],
                                             ],
                                             '<hr>',
+                                            [
+                                                'label' => Yii::t('usuario', 'Switch identity'),
+                                                'url' => ['/user/admin/switch-identity', 'id' => $user->id],
+                                                'visible' => $user->id != Yii::$app->user->id && $this->context->module->enableSwitchIdentities,
+                                                'linkOptions' => [
+                                                    'class' => 'text-success',
+                                                    'data-method' => 'post',
+                                                    'data-confirm' => Yii::t(
+                                                        'usuario',
+                                                        'Are you sure you want to switch to this user for the rest of this Session?'
+                                                    ),
+                                                ]
+                                            ],
                                             [
                                                 'label' => Yii::t('usuario', 'Confirm'),
                                                 'url' => ['/user/admin/confirm', 'id' => $user->id],
