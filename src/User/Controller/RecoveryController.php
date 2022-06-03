@@ -110,6 +110,12 @@ class RecoveryController extends Controller
                 [
                     'title' => Yii::t('usuario', 'Recovery message sent'),
                     'module' => $this->module,
+                    'messages' => [
+                        Yii::t(
+                            'usuario',
+                            'A message with further instructions has been sent to your email'
+                        )
+                    ]
                 ]
             );
         }
@@ -142,16 +148,14 @@ class RecoveryController extends Controller
         $this->trigger(ResetPasswordEvent::EVENT_BEFORE_TOKEN_VALIDATE, $event);
 
         if ($token === null || $token->getIsExpired() || $token->user === null) {
-            Yii::$app->session->setFlash(
-                'danger',
-                Yii::t('usuario', 'Recovery link is invalid or expired. Please try requesting a new one.')
-            );
-
             return $this->render(
                 '/shared/message',
                 [
                     'title' => Yii::t('usuario', 'Invalid or expired link'),
                     'module' => $this->module,
+                    'messages' => [
+                        Yii::t('usuario', 'Recovery link is invalid or expired. Please try requesting a new one.')
+                    ]
                 ]
             );
         }
@@ -165,14 +169,14 @@ class RecoveryController extends Controller
         if ($form->load(Yii::$app->getRequest()->post())) {
             if ($this->make(ResetPasswordService::class, [$form->password, $token->user])->run()) {
                 $this->trigger(ResetPasswordEvent::EVENT_AFTER_RESET, $event);
-
-                Yii::$app->session->setFlash('success', Yii::t('usuario', 'Password has been changed'));
-
                 return $this->render(
                     '/shared/message',
                     [
                         'title' => Yii::t('usuario', 'Password has been changed'),
                         'module' => $this->module,
+                        'messages' => [
+                            Yii::t('usuario', 'Password has been changed')
+                        ]
                     ]
                 );
             }

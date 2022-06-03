@@ -1,34 +1,29 @@
 <?php
-
-/*
- * This file is part of the 2amigos/yii2-usuario project.
- *
- * (c) 2amigOS! <http://2amigos.us/>
- *
- * For the full copyright and license information, please view
- * the LICENSE file that was distributed with this source code.
- */
-
-use yii\bootstrap\Alert;
-
 /**
  * @var $module Da\User\Module
+ * @var $messages array
+ * @var $title string
  */
+
+use yii\helpers\Html;
+
+if (!isset($messages)) {
+    $messages = [];
+}
 ?>
 
-<?php if ($module->enableFlashMessages): ?>
-    <div class="row">
-        <div class="col-xs-12">
-            <?php foreach (Yii::$app->session->getAllFlashes(true) as $type => $message): ?>
-                <?php if (in_array($type, ['success', 'danger', 'warning', 'info'], true)): ?>
-                    <?= Alert::widget(
-                        [
-                            'options' => ['class' => 'alert-dismissible alert-' . $type],
-                            'body' => $message,
-                        ]
-                    ) ?>
-                <?php endif ?>
-            <?php endforeach ?>
+<div class="row">
+    <div class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3">
+        <h2><?php echo isset($title) ? $title : '' ?></h2>
+        <?php foreach ($messages as $message): ?>
+            <p><?php echo $message ?></p>
+        <?php endforeach ?>
+        <div class="form-group">
+            <?php
+            $isGuest = Yii::$app->getUser()->getIsGuest();
+            echo Html::a($isGuest ? Yii::t('usuario', 'Back to login!') : Yii::t('usuario', 'Go to homepage'),
+                $isGuest ? ['/user/security/login'] : Yii::$app->getHomeUrl(), ['class' => 'btn btn-primary'])
+            ?>
         </div>
     </div>
-<?php endif ?>
+</div>

@@ -13,15 +13,16 @@
  * @var yii\web\View
  * @var \Da\User\Module $module
  * @var string          $title
+ * @var array          $messages
  */
 
 $this->title = $title;
 
-?>
-
-<?= $this->render(
+echo $this->render(
     '/shared/_alert',
     [
         'module' => $module,
+        'title' => $title,
+        'messages' => $messages
     ]
 );

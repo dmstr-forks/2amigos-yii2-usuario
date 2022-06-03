@@ -122,16 +122,14 @@ class RegistrationController extends Controller
             $mailService = MailFactory::makeWelcomeMailerService($user);
 
             if ($this->make(UserRegisterService::class, [$user, $mailService])->run()) {
+                $messages = [];
                 if ($this->module->enableEmailConfirmation) {
-                    Yii::$app->session->setFlash(
-                        'info',
-                        Yii::t(
+                    $messages[] = Yii::t(
                             'usuario',
                             'Your account has been created and a message with further instructions has been sent to your email'
-                        )
-                    );
+                        );
                 } else {
-                    Yii::$app->session->setFlash('info', Yii::t('usuario', 'Your account has been created'));
+                    $messages[] = Yii::t('usuario', 'Your account has been created');
                 }
                 $this->trigger(FormEvent::EVENT_AFTER_REGISTER, $event);
                 return $this->render(
@@ -139,6 +137,7 @@ class RegistrationController extends Controller
                     [
                         'title' => Yii::t('usuario', 'Your account has been created'),
                         'module' => $this->module,
+                        'messages' => $messages
                     ]
                 );
             }
@@ -209,16 +208,14 @@ class RegistrationController extends Controller
 
         $this->trigger(UserEvent::EVENT_BEFORE_CONFIRMATION, $event);
 
+        $messages = [];
         if ($this->make(AccountConfirmationService::class, [$code, $user, $userConfirmationService])->run()) {
             Yii::$app->user->login($user, $this->module->rememberLoginLifespan);
-            Yii::$app->session->setFlash('success', Yii::t('usuario', 'Thank you, registration is now complete.'));
+            $messages[] = Yii::t('usuario', 'Thank you, registration is now complete.');
 
             $this->trigger(UserEvent::EVENT_AFTER_CONFIRMATION, $event);
         } else {
-            Yii::$app->session->setFlash(
-                'danger',
-                Yii::t('usuario', 'The confirmation link is invalid or expired. Please try requesting a new one.')
-            );
+            $messages[] = Yii::t('usuario', 'The confirmation link is invalid or expired. Please try requesting a new one.');
         }
 
         return $this->render(
@@ -226,6 +223,7 @@ class RegistrationController extends Controller
             [
                 'title' => Yii::t('usuario', 'Account confirmation'),
                 'module' => $this->module,
+                'messages' => $messages
             ]
         );
     }
@@ -240,6 +238,7 @@ class RegistrationController extends Controller
         }
         /** @var ResendForm $form */
         $form = $this->make(ResendForm::class);
+        /** @var FormEvent $event */
         $event = $this->make(FormEvent::class, [$form]);
 
         $this->make(AjaxRequestModelValidator::class, [$form])->validate();
@@ -248,28 +247,23 @@ class RegistrationController extends Controller
             /** @var User $user */
             $user = $this->userQuery->whereEmail($form->email)->one();
             $success = true;
+            $messages = [];
             if ($user !== null) {
                 $this->trigger(FormEvent::EVENT_BEFORE_RESEND, $event);
                 $mailService = MailFactory::makeConfirmationMailerService($user);
                 if ($success = $this->make(ResendConfirmationService::class, [$user, $mailService])->run()) {
                     $this->trigger(FormEvent::EVENT_AFTER_RESEND, $event);
-                    Yii::$app->session->setFlash(
-                        'info',
-                        Yii::t(
+                    $messages[] =Yii::t(
                             'usuario',
                             'A message has been sent to your email address. It contains a confirmation link that you must click to complete registration.'
-                        )
-                    );
+                        );
                 }
             }
             if ($user === null || $success === false) {
-                Yii::$app->session->setFlash(
-                    'danger',
-                    Yii::t(
+                $messages[] =Yii::t(
                         'usuario',
                         'We couldn\'t re-send the mail to confirm your address. Please, verify is the correct email or if it has been confirmed already.'
-                    )
-                );
+                    );
             }
 
             return $this->render(
@@ -279,6 +273,7 @@ class RegistrationController extends Controller
                         ? Yii::t('usuario', 'A new confirmation link has been sent')
                         : Yii::t('usuario', 'Unable to send confirmation link'),
                     'module' => $this->module,
+                    'messages' => $messages
                 ]
             );
         }
