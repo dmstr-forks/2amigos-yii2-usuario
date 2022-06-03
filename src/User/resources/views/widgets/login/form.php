@@ -27,7 +27,6 @@ use yii\widgets\ActiveForm;
         [
             'id' => 'login-widget-form',
             'action' => Url::to(['/user/security/login']),
-            'enableAjaxValidation' => true,
             'enableClientValidation' => false,
             'validateOnBlur' => false,
             'validateOnType' => false,
