@@ -48,7 +48,7 @@ class SocialNetworkAuthenticateService implements ServiceInterface
     public function run()
     {
         $account = $this->socialNetworkAccountQuery->whereClient($this->client)->one();
-        if (!$this->controller->module->enableRegistration && ($account === null || $account->user === null)) {
+        if (!$this->controller->module->enableSocialNetworkRegistration && ($account === null || $account->user === null)) {
             Yii::$app->session->setFlash('danger', Yii::t('usuario', 'Registration on this website is disabled'));
             $this->authAction->setSuccessUrl(Url::to(['/user/security/login']));
 
@@ -99,12 +99,26 @@ class SocialNetworkAuthenticateService implements ServiceInterface
                 'email' => $this->client->getEmail(),
             ]
         );
-
+        // Link the Social Account to an existing User Account
         if (($user = $this->getUser($account)) instanceof User) {
             $account->user_id = $user->id;
             $account->save(false);
+        } else {
+            // No user account found, create one and link it.
+            $newUser = $this->controller->make(User::class,[],
+                [
+                    'scenario' => 'create',
+                    'email' => $account->email,
+                    'username' => $account->username,
+                    'password' => null
+                ]
+            );
+            if($this->controller->make(UserSocialNetworkRegisterService::class, [$newUser])->run()){
+                $user = $this->getUser($account);
+                $account->user_id = $user->id;
+                $account->save(false);
+            }
         }
-
         return $account;
     }
 

@@ -210,11 +210,11 @@ class Module extends BaseModule
      * @var boolean whether to disable IP logging into user table
      */
     public $disableIpLogging = false;
-    
+
     /**
      * @var array Minimum requirements when a new password is automatically generated.
      * Array structure: `requirement => minimum number characters`.
-     * 
+     *
      * Possible array keys:
      *  - lower: minimum number of lowercase characters;
      *  - upper: minimum number of uppercase characters;
@@ -227,6 +227,12 @@ class Module extends BaseModule
         'digit' => 1,
         'upper' => 1,
     ];
+
+    /**
+     * Enable or disable social network new user registration
+     * @var bool
+     */
+    public $enableSocialNetworkRegistration = false;
 
     /**
      * @return string with the hit to be used with the give consent checkbox
