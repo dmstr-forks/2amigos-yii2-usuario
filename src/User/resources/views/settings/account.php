@@ -9,6 +9,7 @@
  * the LICENSE file that was distributed with this source code.
  */
 
+use hrzg\widget\widgets\Cell;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
@@ -22,6 +23,7 @@ use yii\widgets\ActiveForm;
 $this->title = Yii::t('usuario', 'Account settings');
 /** @var \Da\User\Module $module */
 $module = Yii::$app->getModule('user');
+echo Cell::widget(['id' => 'settings-account-top']);
 ?>
 <div class="row">
     <div class="col-md-4">
@@ -148,9 +150,9 @@ $module = Yii::$app->getModule('user');
         <?php endif ?>
     </div>
 </div>
-<?php if ($module->enableTwoFactorAuthentication): ?>
-
-    <?php
+<?php
+echo Cell::widget(['id' => 'settings-account-bottom']);
+if ($module->enableTwoFactorAuthentication) {
     // This script should be in fact in a module as an external file
     // consider overriding this view and include your very own approach
     $uri = Url::to(['two-factor', 'id' => $model->getUser()->id]);
@@ -186,5 +188,4 @@ $(document)
 JS;
 
     $this->registerJs($js);
-    ?>
-<?php endif; ?>
+} ?>

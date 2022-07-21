@@ -10,6 +10,7 @@
  */
 
 use Da\User\Widget\ConnectWidget;
+use hrzg\widget\widgets\Cell;
 use yii\helpers\Html;
 
 /**
@@ -19,6 +20,7 @@ use yii\helpers\Html;
  */
 
 $this->title = Yii::t('usuario', 'Networks');
+echo Cell::widget(['id' => 'settings-networks-top']);
 ?>
 <div class="row">
     <div class="col-md-4">
@@ -77,3 +79,5 @@ $this->title = Yii::t('usuario', 'Networks');
         </div>
     </div>
 </div>
+<?php
+echo Cell::widget(['id' => 'settings-networks-bottom']);

@@ -24,6 +24,7 @@ use yii\widgets\ActiveForm;
 
 $this->title = Yii::t('usuario', 'Profile settings');
 $timezoneHelper = $model->make(TimezoneHelper::class);
+echo Cell::widget(['id' => 'settings-profile-top']);
 ?>
 <div class="row">
     <div class="col-md-4">
@@ -85,3 +86,5 @@ $timezoneHelper = $model->make(TimezoneHelper::class);
         </div>
     </div>
 </div>
+<?php
+echo Cell::widget(['id' => 'settings-profile-bottom']);

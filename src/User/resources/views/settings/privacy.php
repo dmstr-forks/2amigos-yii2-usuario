@@ -1,5 +1,6 @@
 <?php
 
+use hrzg\widget\widgets\Cell;
 use yii\helpers\Html;
 
 /**
@@ -7,6 +8,7 @@ use yii\helpers\Html;
  */
 
 $this->title = Yii::t('usuario', 'Privacy settings');
+echo Cell::widget(['id' => 'settings-privacy-top']);
 ?>
 
 <div class="row">
@@ -69,3 +71,5 @@ $this->title = Yii::t('usuario', 'Privacy settings');
         </div>
     </div>
 </div>
+<?php
+echo Cell::widget(['id' => 'settings-privacy-bottom']);

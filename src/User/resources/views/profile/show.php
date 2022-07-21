@@ -9,6 +9,7 @@
  * the LICENSE file that was distributed with this source code.
  */
 
+use hrzg\widget\widgets\Cell;
 use yii\helpers\Html;
 
 /**
@@ -17,6 +18,7 @@ use yii\helpers\Html;
  */
 
 $this->title = empty($profile->name) ? Html::encode($profile->user->username) : Html::encode($profile->name);
+echo Cell::widget(['id' => 'profile-show-top']);
 ?>
 <div class="row">
     <div class="col-xs-12 col-sm-6 col-md-6">
@@ -68,3 +70,5 @@ $this->title = empty($profile->name) ? Html::encode($profile->user->username) : 
         </div>
     </div>
 </div>
+<?php
+echo Cell::widget(['id' => 'profile-show-bottom']);
