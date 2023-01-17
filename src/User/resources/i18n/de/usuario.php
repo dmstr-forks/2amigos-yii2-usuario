@@ -261,6 +261,7 @@ return [
     'Your account has been connected' => 'Ihr Konto wurde verbunden',
     'Your account has been created' => 'Ihr Konto wurde erstellt',
     'Your account has been created and a message with further instructions has been sent to your email' => 'Ihr Konto wurde erstellt und eine Nachricht mit weiteren Anweisungen wurde an ihre E-Mail Adresse versendet',
+    'A message with further instructions has been sent to your email' => 'Eine Nachricht mit weiteren Anweisungen wurde an ihre E-Mail Adresse versendet',
     'Your account on {0} has been created' => 'Ihr Konto auf {0} wurde erstellt',
     'Your confirmation token is invalid or expired' => 'Ihr Bestätigungstoken ist falsch oder abgelaufen',
     'Your consent is required to register' => 'Sie müssen Ihre Zustimmung registrieren',
