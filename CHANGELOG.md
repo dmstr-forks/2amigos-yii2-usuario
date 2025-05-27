@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## dev
+## 1.6.4 May 27th, 2025
 
 - Enh: Improved error handling for user identity
 - Enh: Add new column `uuid` to user identity
