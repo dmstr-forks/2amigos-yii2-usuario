@@ -15,14 +15,15 @@ use Da\User\Contracts\AuthManagerInterface;
 use yii\base\InvalidArgumentException;
 use yii\db\Expression;
 use yii\db\Query;
+use yii\helpers\ArrayHelper;
 use yii\rbac\DbManager;
 use yii\rbac\Role;
 
 class AuthDbManagerComponent extends DbManager implements AuthManagerInterface
 {
     /**
-     * @param int|null $type         If null will return all auth items
-     * @param array    $excludeItems Items that should be excluded from result array
+     * @param int|null $type If null will return all auth items
+     * @param array $excludeItems Items that should be excluded from result array
      *
      * @return array
      */
@@ -87,14 +88,17 @@ class AuthDbManagerComponent extends DbManager implements AuthManagerInterface
 
     /**
      * @inheritdoc
-     * @param bool|integer $recursive If the roles are to be calculated recursively. If an integer is passed it will limit the depth of the
-     *  recursion to the given number (e.g. 1 would also get ids from users assigned to only the parents of the given role).
+     *
+     * @param bool|integer $recursive If the roles are to be calculated recursively. If an integer is passed it will
+     *     limit the depth of the recursion to the given number (e.g. 1 would also get ids from users assigned to only
+     *     the parents of the given role).
+     *
      * @override to add possibility to get the ids of users assigned to roles that are parents of the given one.
      * @since 1.6.1
      */
     public function getUserIdsByRole($roleName, $recursive = false)
     {
-        if(!$recursive || empty($roleName)) {
+        if (!$recursive || empty($roleName)) {
             return parent::getUserIdsByRole($roleName);
         }
 
@@ -109,11 +113,14 @@ class AuthDbManagerComponent extends DbManager implements AuthManagerInterface
 
     /**
      * Returns parent roles of the role specified. Depth isn't limited.
+     *
      * @param string $roleName name of the role to file parent roles for
-     * @param null|integer $depth The depth to which to search for parents recursively, if null it won't have any limit. Defaults to `null`.
+     * @param null|integer $depth The depth to which to search for parents recursively, if null it won't have any
+     *     limit. Defaults to `null`.
+     *
+     * @throws \yii\base\InvalidParamException if Role was not found that are getting by $roleName
      * @return Role[] Child roles. The array is indexed by the role names.
      * First element is an instance of the parent Role itself.
-     * @throws \yii\base\InvalidParamException if Role was not found that are getting by $roleName
      * @since 1.6.1
      */
     public function getParentRoles($roleName, $depth = null)
@@ -136,9 +143,12 @@ class AuthDbManagerComponent extends DbManager implements AuthManagerInterface
 
     /**
      * Recursively finds all parents and grandparents of the specified item.
+     *
      * @param string $name the name of the item whose children are to be looked for.
      * @param array $result the children and grand children (in array keys)
-     * @param null|integer $depth The depth to which to search recursively, if null it won't have any limit. Defaults to `null`.
+     * @param null|integer $depth The depth to which to search recursively, if null it won't have any limit. Defaults
+     *     to `null`.
+     *
      * @since 1.6.1
      */
     protected function getParentsRecursive($name, &$result = [], &$depth = null)
@@ -150,15 +160,38 @@ class AuthDbManagerComponent extends DbManager implements AuthManagerInterface
             ->where(['child' => $name, 'name' => new Expression('[[parent]]')]);
 
         foreach ($query->all($this->db) as $row) {
-            if(isset($result[$row['name']])) {
+            if (isset($result[$row['name']])) {
                 continue;
             }
             $result[$row['name']] = $this->populateItem($row);
             // If we have yet to reach the maximum depth, we continue.
             // If $depth was orginally `null` it'd start from -1 so decrements will never make reach 0
-            if($depth !== 0) {
+            if ($depth !== 0) {
                 $this->getParentsRecursive($row['name'], $result);
             }
         }
+    }
+
+    /**
+     * @param string $name Name of the rbac role or permission
+     *
+     * @return \yii\rbac\Item[]
+     */
+    public function parentItems($name)
+    {
+        $parents = (new Query())
+            ->select(['i.*'])
+            ->from(['i' => $this->itemTable])
+            ->innerJoin(['ic' => $this->itemChildTable], 'i.name = ic.parent')
+            ->where(['ic.child' => $name])
+            ->all();
+
+        return ArrayHelper::map(
+            $parents,
+            'name',
+            function ($item) {
+                return $this->populateItem($item);
+            }
+        );
     }
 }
