@@ -70,6 +70,16 @@ class UserQuery extends ActiveQuery
     }
 
     /**
+     * @param $uuid
+     *
+     * @return $this
+     */
+    public function whereUuid($uuid)
+    {
+        return $this->andWhere(['uuid' => $uuid]);
+    }
+
+    /**
      * @param $id
      *
      * @return $this
