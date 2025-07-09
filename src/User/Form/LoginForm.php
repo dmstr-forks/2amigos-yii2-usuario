@@ -207,22 +207,17 @@ class LoginForm extends Model
     public function fields()
     {
         $fields = [];
-        $user = $this->getUser();
-        
-        if ($user) {
-            $fields['username'] = $user->username;
-            
-            if ($this->getScenario() === 'api') {
-                try {
-                    $jwt = $user->getJwt();
-                    $fields['token'] = $jwt ? $jwt->toString() : null;
-                } catch (\Exception $e) {
-                    Yii::warning('Failed to generate JWT token in LoginForm: ' . $e->getMessage());
-                    $fields['token'] = null;
-                }
-            }
+
+        $fields['username'] = function (self $model) {
+            return $model->getUser()->username;
+        };
+
+        if ($this->getScenario() === 'api') {
+            $fields['token'] = function (self $model) {
+                return $model->getUser()->getJwt()?->toString();
+            };
         }
-        
+
         return $fields;
     }
 }
