@@ -47,32 +47,38 @@ class JwtService extends Component
     public function generateToken(User $user, ?callable $config = null): ?UnencryptedToken
     {
         if (!$this->enabled || !$this->isJwtComponentAvailable()) {
+            Yii::info('JWT token generation skipped - service disabled or component unavailable');
             return null;
         }
 
-        $now = DateTimeImmutable::createFromFormat('U', time());
-        $jwt = Yii::$app->get($this->jwtComponent);
-        $builder = $jwt->getBuilder()
-            ->issuedAt($now)
-            ->relatedTo($user->uuid);
+        try {
+            $now = DateTimeImmutable::createFromFormat('U', time());
+            $jwt = Yii::$app->get($this->jwtComponent);
+            $builder = $jwt->getBuilder()
+                ->issuedAt($now)
+                ->relatedTo($user->uuid);
 
-        if (is_callable($config)) {
-            $builder = $config($builder);
-        } else {
-            $module = $this->getModule();
-            $expiresAtModifier = $module->jwtTokenExpiration;
-            $issuer = $module->jwtTokenIssuer;
+            if (is_callable($config)) {
+                $builder = $config($builder);
+            } else {
+                $module = $this->getModule();
+                $expiresAtModifier = $module->jwtTokenExpiration;
+                $issuer = $module->jwtTokenIssuer;
 
-            $builder->identifiedBy(uniqid('jti-'))
-                ->issuedBy($issuer)
-                ->canOnlyBeUsedAfter($now)
-                ->expiresAt($now->modify($expiresAtModifier));
+                $builder->identifiedBy(uniqid('jti-'))
+                    ->issuedBy($issuer)
+                    ->canOnlyBeUsedAfter($now)
+                    ->expiresAt($now->modify($expiresAtModifier));
+            }
+
+            return $builder->getToken(
+                $jwt->getConfiguration()->signer(),
+                $jwt->getConfiguration()->signingKey()
+            );
+        } catch (\Exception $e) {
+            Yii::warning('JWT token generation failed: ' . $e->getMessage());
+            return null;
         }
-
-        return $builder->getToken(
-            $jwt->getConfiguration()->signer(),
-            $jwt->getConfiguration()->signingKey()
-        );
     }
 
     /**
