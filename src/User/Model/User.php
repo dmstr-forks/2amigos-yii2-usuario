@@ -133,27 +133,26 @@ class User extends ActiveRecord implements IdentityInterface
         if ($type === JwtHttpBearerAuth::class) {
             try {
                 /** @var JwtService $jwtService */
-                $jwtService = Yii::$app->get('user')->module->get('jwtService');
-                
+                $jwtService = Yii::$app->getModule('user')->get('jwtService');
+
                 $jwtToken = $jwtService->parseToken((string)$token);
                 if (!$jwtToken) {
                     return null;
                 }
-
                 $userId = $jwtService->getUserUuidFromToken($jwtToken);
+
                 if (!$userId) {
+                    Yii::warning('no user identifier found');
                     return null;
                 }
 
-                $usr = static::find()
+                return static::find()
                     ->whereUuid($userId)
                     ->andWhere(['blocked_at' => null])
                     ->andWhere(['NOT', ['confirmed_at' => null]])
                     ->andWhere(['gdpr_deleted' => 0])
                     ->limit(1)
                     ->one();
-
-                return $usr;
             } catch (\Exception $e) {
                 Yii::warning('JWT authentication failed: ' . $e->getMessage());
                 return null;
@@ -443,7 +442,6 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * Generate a JWT token with the given expiration modifier.
      *
-     * @throws \yii\base\InvalidConfigException
      */
     protected function generateJwtToken(?callable $config = null): ?UnencryptedToken
     {
