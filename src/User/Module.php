@@ -316,13 +316,13 @@ class Module extends BaseModule
     public function init()
     {
         parent::init();
-        
+
         // Configure JWT service if not already configured
         if (!$this->has('jwtService')) {
             $this->set('jwtService', [
                 'class' => JwtService::class,
                 'jwtComponent' => 'jwt',
-                'enabled' => true,
+                'enabled' => false,
             ]);
         }
     }

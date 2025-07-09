@@ -448,6 +448,9 @@ class User extends ActiveRecord implements IdentityInterface
         try {
             /** @var JwtService $jwtService */
             $jwtService = $this->getModule()->get('jwtService');
+            if (!$jwtService->enabled) {
+                Yii::warning('JWT service is disabled');
+            }
             return $jwtService->generateToken($this, $config);
         } catch (\Exception $e) {
             Yii::warning('Failed to generate JWT token: ' . $e->getMessage());
