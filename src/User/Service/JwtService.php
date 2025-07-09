@@ -123,6 +123,11 @@ class JwtService extends Component
      */
     protected function isJwtComponentAvailable(): bool
     {
+        if (!$this->enabled) {
+            Yii::info('JWT service is disabled.');
+            return false;
+        }
+        
         if (!$this->jwtComponent || !Yii::$app->has($this->jwtComponent)) {
             Yii::warning('JWT component "' . $this->jwtComponent . '" is not configured.');
             return false;
