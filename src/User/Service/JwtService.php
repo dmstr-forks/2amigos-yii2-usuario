@@ -53,6 +53,7 @@ class JwtService extends Component
 
         try {
             $now = DateTimeImmutable::createFromFormat('U', time());
+            /** @var \bizley\jwt\Jwt $jwt */
             $jwt = Yii::$app->get($this->jwtComponent);
             $builder = $jwt->getBuilder()
                 ->issuedAt($now)
@@ -65,7 +66,7 @@ class JwtService extends Component
                 $expiresAtModifier = $module->jwtTokenExpiration;
                 $issuer = $module->jwtTokenIssuer;
 
-                $builder->identifiedBy(uniqid('jti-'))
+                $builder = $builder->identifiedBy(uniqid('jti-'))
                     ->issuedBy($issuer)
                     ->canOnlyBeUsedAfter($now)
                     ->expiresAt($now->modify($expiresAtModifier));
@@ -94,16 +95,9 @@ class JwtService extends Component
         }
 
         try {
+            /** @var \bizley\jwt\Jwt $jwt */
             $jwt = Yii::$app->get($this->jwtComponent);
-            $jwtToken = $jwt->getParser()->parse($token);
-            
-            // Validate JWT signature and constraints
-            $constraints = $jwt->getValidationConstraints();
-            if (!$jwt->getValidator()->validate($jwtToken, ...$constraints)) {
-                return null;
-            }
-
-            return $jwtToken;
+            return $jwt->getParser()->parse($token);
         } catch (\Exception $e) {
             Yii::warning('JWT token parsing failed: ' . $e->getMessage());
             return null;
@@ -133,7 +127,7 @@ class JwtService extends Component
             Yii::info('JWT service is disabled.');
             return false;
         }
-        
+
         if (!$this->jwtComponent || !Yii::$app->has($this->jwtComponent)) {
             Yii::warning('JWT component "' . $this->jwtComponent . '" is not configured.');
             return false;
