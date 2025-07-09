@@ -14,6 +14,7 @@ namespace Da\User;
 use Da\User\Contracts\MailChangeStrategyInterface;
 use Da\User\Controller\ProfileController;
 use Da\User\Filter\AccessRuleFilter;
+use Da\User\Service\JwtService;
 use Yii;
 use yii\base\Module as BaseModule;
 use yii\helpers\Html;
@@ -308,6 +309,23 @@ class Module extends BaseModule
         'users/<id>' => 'admin/options',
         'users' => 'admin/options',
     ];
+
+    /**
+     * {@inheritdoc}
+     */
+    public function init()
+    {
+        parent::init();
+        
+        // Configure JWT service if not already configured
+        if (!$this->has('jwtService')) {
+            $this->set('jwtService', [
+                'class' => JwtService::class,
+                'jwtComponent' => 'jwt',
+                'enabled' => true,
+            ]);
+        }
+    }
 
     /**
      * @return string with the hit to be used with the give consent checkbox

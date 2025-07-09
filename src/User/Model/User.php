@@ -14,12 +14,11 @@ namespace Da\User\Model;
 use bizley\jwt\JwtHttpBearerAuth;
 use Da\User\Helper\SecurityHelper;
 use Da\User\Query\UserQuery;
+use Da\User\Service\JwtService;
 use Da\User\Traits\ContainerAwareTrait;
 use Da\User\Traits\ModuleAwareTrait;
-use DateTimeImmutable;
 use eluhr\uuidAttributeBehavior\behaviors\UuidAttributeBehavior;
 use eluhr\uuidAttributeBehavior\validators\UuidValidator;
-use Lcobucci\JWT\Token\Plain;
 use Lcobucci\JWT\UnencryptedToken;
 use Yii;
 use yii\base\Exception;
@@ -132,21 +131,33 @@ class User extends ActiveRecord implements IdentityInterface
     public static function findIdentityByAccessToken($token, $type = null)
     {
         if ($type === JwtHttpBearerAuth::class) {
-            /** @var Plain $jwtToken */
-            $jwtToken = Yii::$app->jwt->getParser()->parse((string)$token);
+            try {
+                /** @var JwtService $jwtService */
+                $jwtService = Yii::$app->get('user')->module->get('jwtService');
+                
+                $jwtToken = $jwtService->parseToken((string)$token);
+                if (!$jwtToken) {
+                    return null;
+                }
 
-            $claims = $jwtToken->claims();
-            $userId = $claims->get('sub');
+                $userId = $jwtService->getUserUuidFromToken($jwtToken);
+                if (!$userId) {
+                    return null;
+                }
 
-            $usr = static::find()
-                ->whereUuid($userId)
-                ->andWhere(['blocked_at' => null])
-                ->andWhere(['NOT', ['confirmed_at' => null]])
-                ->andWhere(['gdpr_deleted' => 0])
-                ->limit(1)
-                ->one();
+                $usr = static::find()
+                    ->whereUuid($userId)
+                    ->andWhere(['blocked_at' => null])
+                    ->andWhere(['NOT', ['confirmed_at' => null]])
+                    ->andWhere(['gdpr_deleted' => 0])
+                    ->limit(1)
+                    ->one();
 
-            return $usr;
+                return $usr;
+            } catch (\Exception $e) {
+                Yii::warning('JWT authentication failed: ' . $e->getMessage());
+                return null;
+            }
         }
         throw new NotSupportedException("Type '$type' is not implemented.");
     }
@@ -432,38 +443,18 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * Generate a JWT token with the given expiration modifier.
      *
-     * @throws \yii\base\InvalidConfigException|\DateMalformedStringException
+     * @throws \yii\base\InvalidConfigException
      */
     protected function generateJwtToken(?callable $config = null): ?UnencryptedToken
     {
-        if (!Yii::$app->has('jwt')) {
-            Yii::warning('$jwt component is not configured.');
+        try {
+            /** @var JwtService $jwtService */
+            $jwtService = $this->getModule()->get('jwtService');
+            return $jwtService->generateToken($this, $config);
+        } catch (\Exception $e) {
+            Yii::warning('Failed to generate JWT token: ' . $e->getMessage());
             return null;
         }
-        $now = DateTimeImmutable::createFromFormat('U', time());
-        /** @var \bizley\jwt\Jwt $jwt */
-        $jwt = Yii::$app->get('jwt');
-        $builder = $jwt->getBuilder()
-            ->issuedAt($now)
-            ->relatedTo($this->uuid);
-
-        if (is_callable($config)) {
-            $builder = $config($builder);
-        } else {
-            $module = $this->getModule();
-            $expiresAtModifier = $module->jwtTokenExpiration;
-            $issuer = $module->jwtTokenIssuer;
-
-            $builder->identifiedBy(uniqid('jti-'))
-                ->issuedBy($issuer)
-                ->canOnlyBeUsedAfter($now)
-                ->expiresAt($now->modify($expiresAtModifier));
-        }
-
-        return $builder->getToken(
-            $jwt->getConfiguration()->signer(),
-            $jwt->getConfiguration()->signingKey()
-        );
     }
 
     public function getJwt(?callable $config = null): ?UnencryptedToken
