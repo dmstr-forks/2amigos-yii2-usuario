@@ -16,9 +16,6 @@ use Da\User\Model\User;
 use Da\User\Query\UserQuery;
 use Da\User\Traits\ContainerAwareTrait;
 use Da\User\Traits\ModuleAwareTrait;
-use Da\User\Validator\TwoFactorCodeValidator;
-use Da\User\Validator\TwoFactorEmailValidator;
-use Da\User\Validator\TwoFactorTextMessageValidator;
 use Yii;
 use yii\base\InvalidParamException;
 use yii\base\Model;
@@ -60,15 +57,25 @@ class LoginForm extends Model
     protected $securityHelper;
 
     /**
-     * @param UserQuery      $query
+     * @param UserQuery $query
      * @param SecurityHelper $securityHelper
-     * @param array          $config
+     * @param array $config
      */
     public function __construct(UserQuery $query, SecurityHelper $securityHelper, $config = [])
     {
         $this->query = $query;
         $this->securityHelper = $securityHelper;
         parent::__construct($config);
+    }
+
+    public function scenarios()
+    {
+        $scenarios = parent::scenarios();
+        $scenarios['api'] = [
+            'login',
+            'password'
+        ];
+        return $scenarios;
     }
 
     /**
@@ -98,8 +105,8 @@ class LoginForm extends Model
                 'required',
                 'on' => '2fa'
             ],
-            'loginTrim' => ['login', 'trim'],
-            'twoFactorAuthenticationCodeTrim' => ['twoFactorAuthenticationCode', 'trim'],
+            'loginTrim' => ['login', 'trim', 'skipOnEmpty' => true],
+            'twoFactorAuthenticationCodeTrim' => ['twoFactorAuthenticationCode', 'trim', 'skipOnEmpty' => true],
             'passwordValidate' => [
                 'password',
                 function ($attribute) {
@@ -119,10 +126,10 @@ class LoginForm extends Model
                         $module = Yii::$app->getModule('user');
                         $validators = $module->twoFactorAuthenticationValidators;
                         $type = $this->user->auth_tf_type;
-                        $class = ArrayHelper::getValue($validators, $type.'.class');
-                        $codeDurationTime = ArrayHelper::getValue($validators, $type.'.codeDurationTime', 300);
+                        $class = ArrayHelper::getValue($validators, $type . '.class');
+                        $codeDurationTime = ArrayHelper::getValue($validators, $type . '.codeDurationTime', 300);
                         $validator = $this
-                        ->make($class, [$this->user, $this->twoFactorAuthenticationCode, $this->module->twoFactorAuthenticationCycles]);
+                            ->make($class, [$this->user, $this->twoFactorAuthenticationCode, $this->module->twoFactorAuthenticationCycles]);
                         $success = $validator->validate();
                         if (!$success) {
                             $this->addError($attribute, $validator->getUnsuccessLoginMessage($codeDurationTime));
@@ -172,9 +179,10 @@ class LoginForm extends Model
     public function beforeValidate()
     {
         if (parent::beforeValidate()) {
-            $this->user = $this->query->whereUsernameOrEmail(trim($this->login))->one();
-
-            return true;
+            if (is_string($this->login)) {
+                $this->user = $this->query->whereUsernameOrEmail(trim($this->login))->one();
+                return true;
+            }
         }
 
         return false;
@@ -189,7 +197,8 @@ class LoginForm extends Model
     }
 
     /**
-     * @param  IdentityInterface $user
+     * @param IdentityInterface $user
+     *
      * @return User
      */
     public function setUser(IdentityInterface $user)
