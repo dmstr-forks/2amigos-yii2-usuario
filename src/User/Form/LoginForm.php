@@ -28,15 +28,15 @@ class LoginForm extends Model
     use ContainerAwareTrait;
 
     /**
-     * @var string login User's email or username
+     * @var string|null login User's email or username
      */
     public $login;
     /**
-     * @var string User's password
+     * @var string|null User's password
      */
     public $password;
     /**
-     * @var string User's two-factor authentication code
+     * @var string|null User's two-factor authentication code
      */
     public $twoFactorAuthenticationCode;
     /**
@@ -179,10 +179,8 @@ class LoginForm extends Model
     public function beforeValidate()
     {
         if (parent::beforeValidate()) {
-            if (is_string($this->login)) {
-                $this->user = $this->query->whereUsernameOrEmail(trim($this->login))->one();
-                return true;
-            }
+            $this->user = $this->query->whereUsernameOrEmail(trim((string)$this->login))->one();
+            return true;
         }
 
         return false;
@@ -204,5 +202,19 @@ class LoginForm extends Model
     public function setUser(IdentityInterface $user)
     {
         return $this->user = $user;
+    }
+
+    public function fields()
+    {
+        $fields = [];
+        $fields['username'] = function (self $model) {
+            return $model->getUser()->username;
+        };
+        if ($this->getScenario() === 'api') {
+            $fields['token'] = function (self $model) {
+                return $model->getUser()->getJwt()->toString();
+            };
+        }
+        return $fields;
     }
 }

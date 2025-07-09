@@ -54,10 +54,14 @@ class SecurityController extends Controller
         /** @var \Da\User\Event\FormEvent $event */
         $event = $this->make(FormEvent::class, [$form]);
 
-        $load = $form->load($this->request->post());
+        $load = $form->load($this->request->post(), '');
         $validate = $form->validate();
-        if ($load && $validate) {
+
+        if ($load) {
             $this->trigger(FormEvent::EVENT_BEFORE_LOGIN, $event);
+        }
+
+        if ($load && $validate) {
             $user = $form->getUser();
             $user->updateAttributes([
                 'last_login_at' => time(),
@@ -65,17 +69,12 @@ class SecurityController extends Controller
             ]);
 
             $this->trigger(FormEvent::EVENT_AFTER_LOGIN, $event);
-
-            return [
-                'token' => $user->getJwt()
-            ];
         }
 
         if ($load && !$validate) {
             $this->trigger(FormEvent::EVENT_FAILED_LOGIN, $event);
         }
 
-        $this->response->setStatusCode(422);
-        return $form->getErrors();
+        return $form;
     }
 }
