@@ -62,12 +62,7 @@ class SecurityController extends Controller
         }
 
         if ($load && $validate) {
-            $user = $form->getUser();
-            $user->updateAttributes([
-                'last_login_at' => time(),
-                'last_login_ip' => $this->module->disableIpLogging ? '127.0.0.1' : $this->request->getUserIP(),
-            ]);
-
+            $this->updateUserLoginInfo($form->getUser());
             $this->trigger(FormEvent::EVENT_AFTER_LOGIN, $event);
         }
 
@@ -76,5 +71,15 @@ class SecurityController extends Controller
         }
 
         return $form;
+    }
+
+    protected function updateUserLoginInfo($user)
+    {
+        if ($user) {
+            $user->updateAttributes([
+                'last_login_at' => time(),
+                'last_login_ip' => $this->module->disableIpLogging ? '127.0.0.1' : $this->request->getUserIP(),
+            ]);
+        }
     }
 }

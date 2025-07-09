@@ -274,6 +274,14 @@ class Module extends BaseModule
      */
     public $enableRestApiLogin = false;
     /**
+     * @var string Default JWT token expiration time modifier.
+     */
+    public $jwtTokenExpiration = '+24 hours';
+    /**
+     * @var string Default JWT token issuer.
+     */
+    public $jwtTokenIssuer = 'www.example.com';
+    /**
      * @var string Which class to use as authenticator for REST API.
      *             Possible values: `HttpBasicAuth`, `HttpBearerAuth` or `QueryParamAuth`.
      *             Default value = `yii\filters\auth\QueryParamAuth` class, therefore access tokens are sent as query parameter; for instance: `https://example.com/users?access-token=xxxxxxxx`.

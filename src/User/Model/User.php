@@ -139,10 +139,11 @@ class User extends ActiveRecord implements IdentityInterface
             $userId = $claims->get('sub');
 
             $usr = static::find()
-                ->whereId($userId)
+                ->whereUuid($userId)
                 ->andWhere(['blocked_at' => null])
                 ->andWhere(['NOT', ['confirmed_at' => null]])
                 ->andWhere(['gdpr_deleted' => 0])
+                ->limit(1)
                 ->one();
 
             return $usr;
@@ -449,8 +450,9 @@ class User extends ActiveRecord implements IdentityInterface
         if (is_callable($config)) {
             $builder = $config($builder);
         } else {
-            $expiresAtModifier = '+24 hours';
-            $issuer = 'www.example.com';
+            $module = $this->getModule();
+            $expiresAtModifier = $module->jwtTokenExpiration;
+            $issuer = $module->jwtTokenIssuer;
 
             $builder->identifiedBy(uniqid('jti-'))
                 ->issuedBy($issuer)
