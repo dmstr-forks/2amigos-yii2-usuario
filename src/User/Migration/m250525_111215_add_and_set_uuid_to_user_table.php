@@ -9,7 +9,7 @@ use yii\db\Query;
 /**
  * To prevent braking already existing migration with uuid, we broke from the "naming convention"
  */
-class m270525_111215_add_and_set_uuid_to_user_table extends Migration
+class m250525_111215_add_and_set_uuid_to_user_table extends Migration
 {
     /**
      * {@inheritdoc}
