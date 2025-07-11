@@ -10,14 +10,14 @@
  */
 
 use Da\User\Model\User;
+use Da\User\Module as UserModule;
 use yii\bootstrap\Nav;
 use yii\helpers\Html;
 use yii\web\View;
-use Da\User\Module as UserModule;
 
 /**
- * @var View   $this
- * @var User   $user
+ * @var View $this
+ * @var User $user
  * @var string $content
  */
 
@@ -88,6 +88,18 @@ $module = Yii::$app->getModule('user');
                                                         'Are you sure you want to confirm this user?'
                                                     ),
                                                 ],
+                                            ],
+                                            [
+                                                'label' => Yii::t('usuario', 'Impersonate this user'),
+                                                'url' => ['/user/admin/switch-identity', 'id' => $user->id],
+                                                'visible' => $user->id != Yii::$app->user->id && $module->enableSwitchIdentities,
+                                                'linkOptions' => [
+                                                        'data-confirm' => Yii::t(
+                                                            'usuario',
+                                                            'Are you sure you want to switch to this user for the rest of this Session?'
+                                                        ),
+                                                        'data-method' => 'POST',
+                                                ]
                                             ],
                                             [
                                                 'label' => Yii::t('usuario', 'Block'),
