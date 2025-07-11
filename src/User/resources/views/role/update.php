@@ -13,6 +13,7 @@
  * @var yii\web\View $this
  * @var \Da\User\Model\Role $model
  * @var string[] $unassignedItems
+ * @var \yii\rbac\Item[] $parentItems
  * @var \Da\User\Module $module
  */
 $this->title = Yii::t('usuario', 'Update role');
@@ -27,6 +28,15 @@ $this->params['breadcrumbs'][] = $this->title;
     [
         'model' => $model,
         'unassignedItems' => $unassignedItems,
+    ]
+) ?>
+
+<hr>
+
+<?= $this->render(
+    '/shared/_parent-items',
+    [
+        'parentItems' => $parentItems
     ]
 ) ?>
 
