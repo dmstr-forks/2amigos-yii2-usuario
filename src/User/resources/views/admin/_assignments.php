@@ -10,6 +10,7 @@
  */
 
 use Da\User\Widget\AssignmentsWidget;
+use yii\bootstrap5\Alert;
 
 /** @var yii\web\View $this */
 /** @var Da\User\Model\User $user */
@@ -20,7 +21,7 @@ use Da\User\Widget\AssignmentsWidget;
 
 <?php $this->beginContent($module->viewPath. '/admin/update.php', ['user' => $user]) ?>
 
-<?= yii\bootstrap\Alert::widget(
+<?= Alert::widget(
     [
         'options' => [
             'class' => 'alert-info alert-dismissible',

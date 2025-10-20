@@ -9,15 +9,14 @@
  * the LICENSE file that was distributed with this source code.
  */
 
-use yii\bootstrap\Nav;
+use yii\bootstrap5\Nav;
 
 ?>
 
 <?= Nav::widget(
     [
         'options' => [
-            'class' => 'nav-tabs',
-            'style' => 'margin-bottom: 15px',
+            'class' => 'nav-tabs mb-4'
         ],
         'items' => [
             [

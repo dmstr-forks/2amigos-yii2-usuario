@@ -9,8 +9,8 @@
  * the LICENSE file that was distributed with this source code.
  */
 
-use dosamigos\selectize\SelectizeDropDownList;
-use yii\bootstrap\Alert;
+use kartik\select2\Select2;
+use yii\bootstrap5\Alert;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -44,7 +44,7 @@ use yii\widgets\ActiveForm;
 <?= Html::activeHiddenInput($model, 'user_id') ?>
 
 <?= $form->field($model, 'items')->widget(
-    SelectizeDropDownList::class,
+    Select2::class,
     [
         'items' => $availableItems,
         'options' => [
