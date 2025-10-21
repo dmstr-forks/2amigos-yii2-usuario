@@ -26,12 +26,12 @@ $this->params['breadcrumbs'][] = $this->title;
 <?= $this->render('/shared/_alert', ['module' => Yii::$app->getModule('user')]) ?>
 
 <div class="row">
-    <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title"><?= Html::encode($this->title) ?></h3>
+    <div class="col-md-4 offset-md-4 col-sm-6 offset-sm-3">
+        <div class="card shadow-sm">
+            <div class="card-header bg-light">
+                <h5 class="mb-0"><?= Html::encode($this->title) ?></h5>
             </div>
-            <div class="panel-body">
+            <div class="card-body">
                 <?php $form = ActiveForm::begin(
                     [
                         'id' => $model->formName(),
@@ -40,6 +40,9 @@ $this->params['breadcrumbs'][] = $this->title;
                         'validateOnBlur' => false,
                         'validateOnType' => false,
                         'validateOnChange' => false,
+                        'fieldConfig' => [
+                            'options' => ['class' => 'mb-3'],
+                        ],
                     ]
                 ) ?>
                 <?= $form->field(
@@ -52,13 +55,13 @@ $this->params['breadcrumbs'][] = $this->title;
                         <?= Html::a(
                             Yii::t('usuario', 'Cancel'),
                             ['login'],
-                            ['class' => 'btn btn-default btn-block', 'tabindex' => '3']
+                            ['class' => 'btn btn-secondary w-100', 'tabindex' => '3']
                         ) ?>
                     </div>
                     <div class="col-md-6">
                         <?= Html::submitButton(
                             Yii::t('usuario', 'Confirm'),
-                            ['class' => 'btn btn-primary btn-block', 'tabindex' => '3']
+                            ['class' => 'btn btn-primary w-100', 'tabindex' => '3']
                         ) ?>
                     </div>
                 </div>

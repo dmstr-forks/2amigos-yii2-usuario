@@ -38,6 +38,9 @@ use yii\widgets\ActiveForm;
     [
         'enableClientValidation' => false,
         'enableAjaxValidation' => false,
+        'fieldConfig' => [
+            'options' => ['class' => 'mb-3'],
+        ],
     ]
 ) ?>
 
@@ -46,14 +49,27 @@ use yii\widgets\ActiveForm;
 <?= $form->field($model, 'items')->widget(
     Select2::class,
     [
-        'items' => $availableItems,
+        'data' => $availableItems,
         'options' => [
             'id' => 'children',
             'multiple' => true,
+            'class' => 'form-select',
+        ],
+        'pluginOptions' => [
+            'allowClear' => true,
+            'theme' => 'bootstrap-5',
+            'placeholder' => Yii::t('usuario', 'Select items...'),
+        ],
+        'addon' => [
+            'prepend' => [
+                'content' => '<i class="bi bi-list-check"></i>',
+            ]
         ],
     ]
 ) ?>
 
-<?= Html::submitButton(Yii::t('usuario', 'Update assignments'), ['class' => 'btn btn-success btn-block']) ?>
+<div class="mb-3">
+    <?= Html::submitButton(Yii::t('usuario', 'Update assignments'), ['class' => 'btn btn-primary w-100']) ?>
+</div>
 
 <?php ActiveForm::end() ?>

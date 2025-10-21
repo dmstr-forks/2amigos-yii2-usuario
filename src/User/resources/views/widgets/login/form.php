@@ -32,6 +32,9 @@ use yii\widgets\ActiveForm;
             'validateOnBlur' => false,
             'validateOnType' => false,
             'validateOnChange' => false,
+            'fieldConfig' => [
+                'options' => ['class' => 'mb-3'],
+            ],
         ]
     ) ?>
 
@@ -41,7 +44,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'rememberMe')->checkbox() ?>
 
-    <?= Html::submitButton(Yii::t('usuario', 'Sign in'), ['class' => 'btn btn-primary btn-block']) ?>
+    <?= Html::submitButton(Yii::t('usuario', 'Sign in'), ['class' => 'btn btn-primary w-100']) ?>
 
     <?php ActiveForm::end(); ?>
 <?php else: ?>
@@ -49,7 +52,7 @@ use yii\widgets\ActiveForm;
         Yii::t('usuario', 'Logout'),
         ['/user/security/logout'],
         [
-            'class' => 'btn btn-danger btn-block',
+            'class' => 'btn btn-danger w-100',
             'data-method' => 'post',
         ]
     ) ?>

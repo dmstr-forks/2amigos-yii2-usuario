@@ -33,21 +33,24 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <div class="row">
     <div class="col-md-12">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title"><?= Html::encode($this->title) ?></h3>
+        <div class="card shadow-sm">
+            <div class="card-header bg-light">
+                <h5 class="mb-0"><?= Html::encode($this->title) ?></h5>
             </div>
-            <div class="panel-body">
+            <div class="card-body">
                 <?= $this->render('/shared/_menu') ?>
                 <div class="row">
                     <div class="col-md-3">
-                        <div class="panel panel-default">
-                            <div class="panel-body">
+                        <div class="card shadow-sm mb-3">
+                            <div class="card-body p-0">
+                                <div class="list-group list-group-flush">
                                 <?= Nav::widget(
                                     [
                                         'options' => [
-                                            'class' => 'nav-pills nav-stacked',
+                                            'class' => 'list-group list-group-flush',
+                                            'role' => 'tablist',
                                         ],
+                                        'encodeLabels' => false,
                                         'items' => [
                                             [
                                                 'label' => Yii::t('usuario', 'Account details'),
@@ -70,12 +73,13 @@ $this->params['breadcrumbs'][] = $this->title;
                                         ],
                                     ]
                                 ) ?>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-9">
-                        <div class="panel panel-default">
-                            <div class="panel-body">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
                                 <div class="alert alert-info">
                                     <?= Yii::t('usuario', 'Credentials will be sent to the user by email') ?>.
                                     <?= Yii::t(
@@ -98,11 +102,11 @@ $this->params['breadcrumbs'][] = $this->title;
 
                                 <?= $this->render('/admin/_user', ['form' => $form, 'user' => $user]) ?>
 
-                                <div class="form-group">
-                                    <div class="col-lg-offset-3 col-lg-9">
+                                <div class="row mb-3">
+                                    <div class="col-lg-9 offset-lg-2">
                                         <?= Html::submitButton(
                                             Yii::t('usuario', 'Save'),
-                                            ['class' => 'btn btn-block btn-success']
+                                            ['class' => 'btn btn-primary w-100']
                                         ) ?>
                                     </div>
                                 </div>

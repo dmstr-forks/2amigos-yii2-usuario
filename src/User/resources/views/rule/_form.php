@@ -15,6 +15,9 @@ use yii\widgets\ActiveForm;
     [
         'enableClientValidation' => false,
         'enableAjaxValidation' => true,
+        'fieldConfig' => [
+            'options' => ['class' => 'mb-3'],
+        ],
     ]
 ) ?>
 
@@ -22,6 +25,8 @@ use yii\widgets\ActiveForm;
 
 <?= $form->field($model, 'className') ?>
 
-<?= Html::submitButton(Yii::t('usuario', 'Save'), ['class' => 'btn btn-success btn-block']) ?>
+<div class="mb-3">
+    <?= Html::submitButton(Yii::t('usuario', 'Save'), ['class' => 'btn btn-primary w-100']) ?>
+</div>
 
 <?php ActiveForm::end() ?>

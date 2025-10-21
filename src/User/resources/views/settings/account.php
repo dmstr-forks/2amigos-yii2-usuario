@@ -35,18 +35,18 @@ $module = Yii::$app->getModule('user');
         <?= $this->render('/settings/_menu') ?>
     </div>
     <div class="col-md-9">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title"><?= Html::encode($this->title) ?></h3>
+        <div class="card shadow-sm">
+            <div class="card-header bg-light">
+                <h5 class="mb-0"><?= Html::encode($this->title) ?></h5>
             </div>
-            <div class="panel-body">
+            <div class="card-body">
                 <?php $form = ActiveForm::begin(
                     [
                         'id' => $model->formName(),
                         'options' => ['class' => 'form-horizontal'],
                         'fieldConfig' => [
-                            'template' => "{label}\n<div class=\"col-lg-9\">{input}</div>\n<div class=\"col-sm-offset-3 col-lg-9\">{error}\n{hint}</div>",
-                            'labelOptions' => ['class' => 'col-lg-3 control-label'],
+                            'template' => "{label}\n<div class=\"col-lg-9\">{input}</div>\n<div class=\"offset-sm-3 col-lg-9\">{error}\n{hint}</div>",
+                            'labelOptions' => ['class' => 'col-lg-3 col-form-label'],
                         ],
                         'enableAjaxValidation' => true,
                         'enableClientValidation' => false,
@@ -63,10 +63,9 @@ $module = Yii::$app->getModule('user');
 
                 <?= $form->field($model, 'current_password')->passwordInput() ?>
 
-                <div class="form-group">
-                    <div class="col-lg-offset-3 col-lg-9">
-                        <?= Html::submitButton(Yii::t('usuario', 'Save'), ['class' => 'btn btn-block btn-success']) ?>
-                        <br>
+                <div class="row mb-3">
+                    <div class="col-lg-9 offset-lg-3">
+                        <?= Html::submitButton(Yii::t('usuario', 'Save'), ['class' => 'btn btn-success w-100']) ?>
                     </div>
                 </div>
 
@@ -79,27 +78,26 @@ $module = Yii::$app->getModule('user');
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                    aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title" id="myModalLabel">
-                                <?= Yii::t('usuario', 'Two Factor Authentication (2FA)') ?></h4>
+                            <h5 class="modal-title" id="myModalLabel">
+                                <?= Yii::t('usuario', 'Two Factor Authentication (2FA)') ?></h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             ...
                         </div>
-                        <div class="modal-footer">                            
-                            <button type="button" class="btn btn-default" data-dismiss="modal" onClick='window.location.reload();'>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onClick='window.location.reload();'>
                                 <?= Yii::t('usuario', 'Close') ?>
                             </button>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="panel panel-info">
-                <div class="panel-heading">
-                    <h3 class="panel-title"><?= Yii::t('usuario', 'Two Factor Authentication (2FA)') ?></h3>
+            <div class="card border-info shadow-sm mb-3">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0"><?= Yii::t('usuario', 'Two Factor Authentication (2FA)') ?></h5>
                 </div>
-                <div class="panel-body">
+                <div class="card-body">
                     <p>
                         <?= Yii::t('usuario', 'Two factor authentication protects you in case of stolen credentials') ?>.
                     </p>
@@ -133,8 +131,8 @@ $module = Yii::$app->getModule('user');
                             [
                                 'id' => 'enable_tf_btn',
                                 'class' => 'btn btn-info',
-                                'data-toggle' => 'modal',
-                                'data-target' => '#tfmodal'
+                                'data-bs-toggle' => 'modal',
+                                'data-bs-target' => '#tfmodal'
                             ]
                         ) ?>
                     <?php else:
@@ -172,11 +170,11 @@ $module = Yii::$app->getModule('user');
             </div>
         <?php endif; ?>
         <?php if ($model->module->allowAccountDelete): ?>
-            <div class="panel panel-danger">
-                <div class="panel-heading">
-                    <h3 class="panel-title"><?= Yii::t('usuario', 'Delete account') ?></h3>
+            <div class="card border-danger shadow-sm">
+                <div class="card-header bg-danger text-white">
+                    <h5 class="mb-0"><?= Yii::t('usuario', 'Delete account') ?></h5>
                 </div>
-                <div class="panel-body">
+                <div class="card-body">
                     <p>
                         <?= Yii::t('usuario', 'Once you delete your account, there is no going back') ?>.
                         <?= Yii::t('usuario', 'It will be deleted forever') ?>.

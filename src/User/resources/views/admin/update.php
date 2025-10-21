@@ -38,21 +38,24 @@ $module = Yii::$app->getModule('user');
 
 <div class="row">
     <div class="col-md-12">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title"><?= Html::encode($this->title) ?></h3>
+        <div class="card shadow-sm">
+            <div class="card-header bg-light">
+                <h5 class="mb-0"><?= Html::encode($this->title) ?></h5>
             </div>
-            <div class="panel-body">
+            <div class="card-body">
                 <?= $this->render('/shared/_menu') ?>
                 <div class="row">
                     <div class="col-md-3">
-                        <div class="panel panel-default">
-                            <div class="panel-body">
+                        <div class="card shadow-sm mb-3">
+                            <div class="card-body p-0">
+                                <div class="list-group list-group-flush">
                                 <?= Nav::widget(
                                     [
                                         'options' => [
-                                            'class' => 'nav-pills nav-stacked',
+                                            'class' => 'list-group list-group-flush',
+                                            'role' => 'tablist',
                                         ],
+                                        'encodeLabels' => false,
                                         'items' => [
                                             [
                                                 'label' => Yii::t('usuario', 'Account details'),
@@ -142,12 +145,13 @@ $module = Yii::$app->getModule('user');
                                         ],
                                     ]
                                 ) ?>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-9">
-                        <div class="panel panel-default">
-                            <div class="panel-body">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
                                 <?= $content ?>
                             </div>
                         </div>

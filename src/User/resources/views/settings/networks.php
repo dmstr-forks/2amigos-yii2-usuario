@@ -31,11 +31,11 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= $this->render('/settings/_menu') ?>
     </div>
     <div class="col-md-9">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <?= Html::encode($this->title) ?>
+        <div class="card shadow-sm">
+            <div class="card-header bg-light">
+                <h5 class="mb-0"><?= Html::encode($this->title) ?></h5>
             </div>
-            <div class="panel-body">
+            <div class="card-body">
                 <div class="alert alert-info">
                     <p><?= Yii::t('usuario', 'You can connect multiple accounts to be able to log in using them') ?>
                         .</p>
@@ -63,7 +63,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         Yii::t('usuario', 'Disconnect'),
                                         $auth->createClientUrl($client),
                                         [
-                                            'class' => 'btn btn-danger btn-block',
+                                            'class' => 'btn btn-danger w-100',
                                             'data-method' => 'post',
                                         ]
                                     ) :
@@ -71,7 +71,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         Yii::t('usuario', 'Connect'),
                                         $auth->createClientUrl($client),
                                         [
-                                            'class' => 'btn btn-success btn-block',
+                                            'class' => 'btn btn-success w-100',
                                         ]
                                     )
                                 ?>

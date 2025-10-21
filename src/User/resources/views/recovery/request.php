@@ -22,23 +22,26 @@ $this->title = Yii::t('usuario', 'Recover your password');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="row">
-    <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title"><?= Html::encode($this->title) ?></h3>
+    <div class="col-md-4 offset-md-4 col-sm-6 offset-sm-3">
+        <div class="card shadow-sm">
+            <div class="card-header bg-light">
+                <h5 class="mb-0"><?= Html::encode($this->title) ?></h5>
             </div>
-            <div class="panel-body">
+            <div class="card-body">
                 <?php $form = ActiveForm::begin(
                     [
                         'id' => $model->formName(),
                         'enableAjaxValidation' => true,
                         'enableClientValidation' => false,
+                        'fieldConfig' => [
+                            'options' => ['class' => 'mb-3'],
+                        ],
                     ]
                 ); ?>
 
                 <?= $form->field($model, 'email')->textInput(['autofocus' => true]) ?>
 
-                <?= Html::submitButton(Yii::t('usuario', 'Continue'), ['class' => 'btn btn-primary btn-block']) ?><br>
+                <?= Html::submitButton(Yii::t('usuario', 'Continue'), ['class' => 'btn btn-primary w-100 mb-3']) ?>
 
                 <?php ActiveForm::end(); ?>
             </div>

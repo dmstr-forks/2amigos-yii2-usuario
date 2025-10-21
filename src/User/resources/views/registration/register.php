@@ -23,17 +23,20 @@ $this->title = Yii::t('usuario', 'Sign up');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="row">
-    <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title"><?= Html::encode($this->title) ?></h3>
+    <div class="col-md-4 offset-md-4 col-sm-6 offset-sm-3">
+        <div class="card shadow-sm">
+            <div class="card-header bg-light">
+                <h5 class="mb-0"><?= Html::encode($this->title) ?></h5>
             </div>
-            <div class="panel-body">
+            <div class="card-body">
                 <?php $form = ActiveForm::begin(
                     [
                         'id' => $model->formName(),
                         'enableAjaxValidation' => true,
                         'enableClientValidation' => false,
+                        'fieldConfig' => [
+                            'options' => ['class' => 'mb-3'],
+                        ],
                     ]
                 ); ?>
 
@@ -49,7 +52,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <?= $form->field($model, 'gdpr_consent')->checkbox(['value' => 1]) ?>
                 <?php endif ?>
 
-                <?= Html::submitButton(Yii::t('usuario', 'Sign up'), ['class' => 'btn btn-success btn-block']) ?>
+                <?= Html::submitButton(Yii::t('usuario', 'Sign up'), ['class' => 'btn btn-success w-100']) ?>
 
                 <?php ActiveForm::end(); ?>
             </div>

@@ -28,16 +28,18 @@ use yii\data\ActiveDataProvider;
 ?>
 
 <?php $this->beginContent($module->viewPath. '/admin/update.php', ['user' => $user]) ?>
-    <div class="row">
-        <div class="col-xs-12">
-            <?= Html::a(
-                Yii::t('usuario', 'Terminate all sessions'),
-                ['/user/admin/terminate-sessions', 'id' => $user->id],
-                [
-                    'class' => 'btn btn-danger btn-xs pull-right',
-                    'data-method' => 'post'
-                ]
-            ) ?>
+    <div class="row mb-3">
+        <div class="col-12">
+            <div class="d-flex justify-content-end">
+                <?= Html::a(
+                    Yii::t('usuario', 'Terminate all sessions'),
+                    ['/user/admin/terminate-sessions', 'id' => $user->id],
+                    [
+                        'class' => 'btn btn-danger btn-sm',
+                        'data-method' => 'post'
+                    ]
+                ) ?>
+            </div>
         </div>
     </div>
     <hr>

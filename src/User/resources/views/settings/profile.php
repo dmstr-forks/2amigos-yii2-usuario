@@ -35,18 +35,18 @@ $timezoneHelper = $model->make(TimezoneHelper::class);
         <?= $this->render('_menu') ?>
     </div>
     <div class="col-md-9">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title"><?= Html::encode($this->title) ?></h3>
+        <div class="card shadow-sm">
+            <div class="card-header bg-light">
+                <h5 class="mb-0"><?= Html::encode($this->title) ?></h5>
             </div>
-            <div class="panel-body">
+            <div class="card-body">
                 <?php $form = ActiveForm::begin(
                     [
                         'id' => $model->formName(),
                         'options' => ['class' => 'form-horizontal'],
                         'fieldConfig' => [
-                            'template' => "{label}\n<div class=\"col-lg-9\">{input}</div>\n<div class=\"col-sm-offset-3 col-lg-9\">{error}\n{hint}</div>",
-                            'labelOptions' => ['class' => 'col-lg-3 control-label'],
+                            'template' => "{label}\n<div class=\"col-lg-9\">{input}</div>\n<div class=\"offset-sm-3 col-lg-9\">{error}\n{hint}</div>",
+                            'labelOptions' => ['class' => 'col-lg-3 col-form-label'],
                         ],
                         'enableAjaxValidation' => true,
                         'enableClientValidation' => false,
@@ -78,10 +78,9 @@ $timezoneHelper = $model->make(TimezoneHelper::class);
 
                 <?= $form->field($model, 'bio')->textarea() ?>
 
-                <div class="form-group">
-                    <div class="col-lg-offset-3 col-lg-9">
-                        <?= Html::submitButton(Yii::t('usuario', 'Save'), ['class' => 'btn btn-block btn-success']) ?>
-                        <br>
+                <div class="row mb-3">
+                    <div class="col-lg-9 offset-lg-3">
+                        <?= Html::submitButton(Yii::t('usuario', 'Save'), ['class' => 'btn btn-success w-100']) ?>
                     </div>
                 </div>
 

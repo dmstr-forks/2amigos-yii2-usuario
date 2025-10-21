@@ -35,19 +35,19 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= $this->render('/settings/_menu') ?>
     </div>
     <div class="col-md-9">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <?= Html::encode($this->title) ?>
+        <div class="card shadow-sm">
+            <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                <h5 class="mb-0"><?= Html::encode($this->title) ?></h5>
                 <?= Html::a(
                     Yii::t('usuario', 'Terminate all sessions'),
                     ['/user/settings/terminate-sessions'],
                     [
-                        'class' => 'btn btn-danger btn-xs pull-right',
+                        'class' => 'btn btn-danger btn-sm',
                         'data-method' => 'post'
                     ]
                 ) ?>
             </div>
-            <div class="panel-body">
+            <div class="card-body">
 
                 <?php Pjax::begin(); ?>
 

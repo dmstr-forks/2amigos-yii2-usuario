@@ -15,14 +15,14 @@ use yii\helpers\Html;
 ?>
 
 <div class="row">
-    <div class="col-md-6 col-md-offset-3">
-        <div class="panel panel-danger">
-            <div class="panel-heading">
-                <h3 class="panel-title">
+    <div class="col-md-6 offset-md-3">
+        <div class="card border-danger shadow-sm">
+            <div class="card-header bg-danger text-white">
+                <h5 class="mb-0">
                     <?= Yii::t('usuario', 'Delete personal data') ?>
-                </h3>
+                </h5>
             </div>
-            <div class="panel-body">
+            <div class="card-body">
                 <p><?= Yii::t('usuario', 'You are about to delete all your personal data from this site.') ?></p>
                 <p class="text-danger">
                     <?= Yii::t(
@@ -35,7 +35,7 @@ use yii\helpers\Html;
                 $form = ActiveForm::begin([])
                 ?>
                 <div class="row">
-                    <div class="col-md-6 col-md-offset-3">
+                    <div class="col-md-6 offset-md-3">
                         <?= $form->field($model, 'password')->passwordInput() ?>
                     </div>
                 </div>

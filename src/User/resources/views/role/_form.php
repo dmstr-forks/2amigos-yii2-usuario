@@ -27,6 +27,9 @@ $unassignedItems = Yii::$container->get(AuthHelper::class)->getUnassignedItems($
     [
         'enableClientValidation' => false,
         'enableAjaxValidation' => true,
+        'fieldConfig' => [
+            'options' => ['class' => 'mb-3'],
+        ],
     ]
 ) ?>
 
@@ -35,23 +38,47 @@ $unassignedItems = Yii::$container->get(AuthHelper::class)->getUnassignedItems($
 <?= $form->field($model, 'description') ?>
 
 <?= $form->field($model, 'rule')->widget(Select2::class, [
-    'items' => ArrayHelper::map(Yii::$app->getAuthManager()->getRules(), 'name', 'name'),
+    'data' => ArrayHelper::map(Yii::$app->getAuthManager()->getRules(), 'name', 'name'),
     'options' => [
-        'prompt' => Yii::t('usuario', 'Select rule...')
-    ]
+        'prompt' => Yii::t('usuario', 'Select rule...'),
+        'class' => 'form-select',
+    ],
+    'pluginOptions' => [
+        'allowClear' => true,
+        'theme' => 'bootstrap-5',
+        'placeholder' => Yii::t('usuario', 'Select rule...'),
+    ],
+    'addon' => [
+        'prepend' => [
+            'content' => '<i class="bi bi-shield-check"></i>',
+        ]
+    ],
 ]) ?>
 
 <?= $form->field($model, 'children')->widget(
     Select2::class,
     [
-        'items' => $unassignedItems,
+        'data' => $unassignedItems,
         'options' => [
             'id' => 'children',
             'multiple' => true,
+            'class' => 'form-select',
+        ],
+        'pluginOptions' => [
+            'allowClear' => true,
+            'theme' => 'bootstrap-5',
+            'placeholder' => Yii::t('usuario', 'Select children...'),
+        ],
+        'addon' => [
+            'prepend' => [
+                'content' => '<i class="bi bi-diagram-3"></i>',
+            ]
         ],
     ]
 ) ?>
 
-<?= Html::submitButton(Yii::t('usuario', 'Save'), ['class' => 'btn btn-success btn-block']) ?>
+<div class="mb-3">
+    <?= Html::submitButton(Yii::t('usuario', 'Save'), ['class' => 'btn btn-primary w-100']) ?>
+</div>
 
 <?php ActiveForm::end() ?>
