@@ -352,7 +352,7 @@ class SettingsController extends Controller
             Yii::$app->response->send();
             $f = fopen('php://output', 'w');
             foreach ($data as $line) {
-                fputcsv($f, $line);
+                fputcsv($f, $line, ',', '"', "\\", "\n");
             }
         } catch (\Exception $e) {
             throw $e;
