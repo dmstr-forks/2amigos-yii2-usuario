@@ -13,11 +13,16 @@
  * @var yii\web\View $this
  * @var Da\User\Model\Permission $model
  * @var string[] $unassignedItems
+ * @var \yii\rbac\Item[] $parentItems
  * @var \Da\User\Module $module
  */
 
+use yii\helpers\Html;
+use yii\rbac\Role;
+
 $this->title = Yii::t('usuario', 'Update permission');
 $this->params['breadcrumbs'][] = $this->title;
+
 
 ?>
 
@@ -28,6 +33,15 @@ $this->params['breadcrumbs'][] = $this->title;
     [
         'model' => $model,
         'unassignedItems' => $unassignedItems,
+    ]
+) ?>
+
+<hr>
+
+<?= $this->render(
+    '/shared/_parent-items',
+    [
+        'parentItems' => $parentItems
     ]
 ) ?>
 

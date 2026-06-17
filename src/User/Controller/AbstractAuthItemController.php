@@ -16,6 +16,7 @@ use Da\User\Helper\AuthHelper;
 use Da\User\Model\AbstractAuthItem;
 use Da\User\Module;
 use Da\User\Service\AuthItemEditionService;
+use Da\User\Traits\AuthManagerAwareTrait;
 use Da\User\Traits\ContainerAwareTrait;
 use Da\User\Validator\AjaxRequestModelValidator;
 use Yii;
@@ -25,6 +26,8 @@ use yii\web\Controller;
 abstract class AbstractAuthItemController extends Controller
 {
     use ContainerAwareTrait;
+    use AuthManagerAwareTrait;
+
 
     protected $modelClass;
     protected $searchModelClass;
@@ -132,7 +135,8 @@ abstract class AbstractAuthItemController extends Controller
             [
                 'model' => $model,
                 'unassignedItems' => $this->authHelper->getUnassignedItems($model),
-                'module' => $this->module
+                'module' => $this->module,
+                'parentItems' => $this->getAuthManager()->parentItems($name)
             ]
         );
     }

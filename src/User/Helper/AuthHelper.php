@@ -15,6 +15,7 @@ use Da\User\Model\AbstractAuthItem;
 use Da\User\Module;
 use Da\User\Traits\AuthManagerAwareTrait;
 use Yii;
+use yii\db\Query;
 use yii\helpers\ArrayHelper;
 use yii\rbac\Permission;
 use yii\rbac\Role;
@@ -108,6 +109,28 @@ class AuthHelper
             function ($item) {
                 return empty($item->description) ? $item->name : "{$item->name} ({$item->description})";
             }
+        );
+    }
+
+    /**
+     * @param string $name Name of the rbac role or permission
+     *
+     * @return string[]
+     */
+    public function parentItems($name)
+    {
+        $authManager = $this->getAuthManager();
+        $parents = (new Query())
+            ->select(['i.*'])
+            ->from(['i' => $authManager->itemTable])
+            ->innerJoin(['ic' => $authManager->itemChildTable], 'i.name = ic.parent')
+            ->where(['ic.child' => $name])
+            ->all();
+
+        return ArrayHelper::map(
+            $parents,
+            'name',
+            'name'
         );
     }
 }
